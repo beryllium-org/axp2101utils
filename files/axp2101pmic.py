@@ -5,7 +5,10 @@ if "i" in vr("opts")["o"]:
     vr("busn", 0)
     if vr("opts")["o"]["i"] is not None:
         try:
-            vr("busn", int(vr("opts")["o"]["i"]))
+            vr("nbus", vr("opts")["o"]["i"])
+            if not vr("nbus").startswith("/dev/i2c"):
+                raise RuntimeError
+            vr("busn", int(vr("opts")["o"]["i"][-1:]))
         except:
             term.write("Could not parse node, using default.")
     vr("i2c", be.devices["i2c"][vr("busn")])
