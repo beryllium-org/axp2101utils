@@ -14,10 +14,13 @@ if "i" in vr("opts")["o"]:
     vr("i2c", be.devices["i2c"][vr("busn")])
     try:
         from axp2101 import AXP2101
+
         vr("axp", AXP2101(vr("i2c")))
         del AXP2101
-        be.based.run("mknod AXP2101")
-        vr("node", be.api.getvar("return"))
+        be.api.setvar("argj", "mknod AXP2101")
+        be.api.subscript("/bin/mknod.py")
+        vr("node", be.api.getvar("out"))
+        be.api.setvar("out", None)
         be.api.subscript("/bin/stringproccessing/devid.py")
         be.devices["AXP2101"][vr("dev_id")] = vr("axp")
         dmtex("Registed /dev/AXP2101_0 Power Management device")
